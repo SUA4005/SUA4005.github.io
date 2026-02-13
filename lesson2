@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Lesson 3 Countdown</title>
+
+<style>
+    html, body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: #0E1746;
+    }
+
+    .frame {
+        position: absolute;
+        top: 30px;
+        left: 30px;
+        right: 30px;
+        bottom: 30px;
+        border: 12px solid white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+    }
+
+    .content {
+        text-align: center;
+        color: white;
+        font-weight: bold;
+    }
+
+    .label {
+        font-size: 4vw;
+        margin-bottom: 25px;
+    }
+
+    .timer-wrapper {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 28px;
+    }
+
+    .time-block {
+        text-align: center;
+    }
+
+    .time {
+        font-size: 9.5vw;
+        font-weight: bold;
+        color: #92D050;
+        line-height: 1;
+    }
+
+    .colon {
+        font-size: 9.5vw;
+        font-weight: bold;
+        color: #92D050;
+        line-height: 1;
+    }
+
+    .time-label {
+        font-size: 2vw;
+        font-weight: normal;
+        margin-top: 6px;
+        color: #92D050;
+    }
+
+    .late .time,
+    .late .colon,
+    .late .time-label {
+        color: #EE0000;
+    }
+
+    /* Unified pulse */
+    .late {
+        animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+        0%   { transform: scale(1); }
+        50%  { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+
+    .logo-triangle {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 22vw;
+        height: 15vw;
+        background: white;
+        clip-path: polygon(100% 0, 100% 100%, 0 100%);
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+        padding: 30px 30px 20px 30px;
+        box-sizing: border-box;
+    }
+
+    .logo-triangle img {
+        max-width: 8vw;
+        height: auto;
+        margin-bottom: -0.8vw;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="frame">
+    <div class="content">
+        <div id="label" class="label">Lesson 3 starts in:</div>
+
+        <div id="timerContainer" class="timer-wrapper">
+            <div class="time-block">
+                <div id="minutes" class="time">00</div>
+                <div class="time-label">Minutes</div>
+            </div>
+
+            <div class="colon">:</div>
+
+            <div class="time-block">
+                <div id="seconds" class="time">00</div>
+                <div class="time-label">Seconds</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="logo-triangle">
+        <img src="sua-logo.png" alt="Staffordshire University Academy Logo">
+    </div>
+</div>
+
+<script>
+   const m = document.getElementById("m"),
+      s = document.getElementById("s"),
+      t = document.getElementById("timer"),
+      l = document.getElementById("label");
+
+function target(n){
+    const d = n.getDay();
+    const start = new Date(n);
+
+    // Mon–Wed
+    if (d >= 1 && d <= 3) {
+        start.setHours(9,45,0,0);
+    }
+    // Thu–Fri
+    else if (d === 4 || d === 5) {
+        start.setHours(9,40,0,0);
+    }
+    // Weekend fallback
+    else {
+        start.setHours(9,45,0,0);
+    }
+
+    return start;
+}
+
+function update(){
+    const now = new Date();
+    const start = target(now);
+
+    let diff;
+    const beforeStart = now < start;
+
+    if (beforeStart) {
+        diff = start - now;
+        l.textContent = "Lesson 2 starts in:";
+        t.classList.remove("late");
+    } else {
+        diff = now - start;
+        l.textContent = "Lesson 2 has started:";
+        t.classList.add("late");
+    }
+
+    diff = Math.floor(diff / 1000);
+
+    m.textContent = String(Math.floor(diff / 60)).padStart(2, "0");
+    s.textContent = String(diff % 60).padStart(2, "0");
+}
+
+update();
+setInterval(update, 1000);
+    });
+</script>
+
+</body>
+
+</html>
